@@ -1,4 +1,4 @@
-# 🚀 Vibe Product ID
+# 🚀 Vibe Product ID x Claude 
 
 > Platform digital multi-layanan untuk SMM Panel, Wedding Invitation, Blog, Ideathon, dan Affiliate Management.
 
