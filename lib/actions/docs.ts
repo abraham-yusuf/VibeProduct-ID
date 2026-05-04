@@ -8,7 +8,7 @@ import { docsPages, docsCategories } from "@/lib/db/schema/docs"
 import {
   docsPageSchema, docsCategorySchema,
   type DocsPageInput, type DocsCategoryInput,
-} from "@/lib/validations/ideathon"
+} from "@/lib/validations/docs"
 import { eq } from "drizzle-orm"
 import { slugify } from "@/lib/utils"
 
