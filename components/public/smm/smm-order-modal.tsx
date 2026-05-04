@@ -3,7 +3,7 @@
 import { useState } from "react"
 import { useForm } from "react-hook-form"
 import { zodResolver } from "@hookform/resolvers/zod"
-import { orderSchema, type OrderInput } from "@/lib/validations/smm"
+import { orderSchema, type OrderFormInput } from "@/lib/validations/smm"
 import { formatRupiah } from "@/lib/utils"
 import { MIDTRANS_CLIENT_KEY } from "@/lib/midtrans"
 import {
@@ -29,7 +29,7 @@ declare global {
 export function SmmOrderModal({ pkg, open, onClose }: Props) {
   const [loading, setLoading] = useState(false)
 
-  const { register, handleSubmit, watch, formState: { errors } } = useForm<OrderInput>({
+  const { register, handleSubmit, watch, formState: { errors } } = useForm<OrderFormInput>({
     resolver: zodResolver(orderSchema),
     defaultValues: { packageId: pkg.id, quantity: pkg.minQty ?? 100 },
   })
@@ -37,13 +37,14 @@ export function SmmOrderModal({ pkg, open, onClose }: Props) {
   const qty   = watch("quantity") || 0
   const total = pkg.price * Number(qty)
 
-  async function onSubmit(data: OrderInput) {
+  async function onSubmit(data: OrderFormInput) {
     setLoading(true)
+    const payload = orderSchema.parse(data)
     try {
       const res = await fetch("/api/smm/create-order", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify(data),
+        body: JSON.stringify(payload),
       })
       const result = await res.json()
       if (!res.ok) throw new Error(result.error)
@@ -67,8 +68,9 @@ export function SmmOrderModal({ pkg, open, onClose }: Props) {
         onError:     () => toast.error("Pembayaran gagal. Silakan coba lagi."),
         onClose:     () => toast.warning("Kamu menutup halaman pembayaran."),
       })
-    } catch (e: any) {
-      toast.error(e.message ?? "Terjadi kesalahan. Coba lagi.")
+    } catch (error: unknown) {
+      const message = error instanceof Error ? error.message : "Terjadi kesalahan. Coba lagi."
+      toast.error(message)
     } finally {
       setLoading(false)
     }

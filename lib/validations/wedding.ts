@@ -6,7 +6,7 @@ export const weddingCategories = [
 
 export const weddingThemeSchema = z.object({
   name:         z.string().min(2, "Nama tema minimal 2 karakter"),
-  category:     z.enum(weddingCategories, { errorMap: () => ({ message: "Pilih kategori" }) }),
+  category:     z.enum(weddingCategories, { message: "Pilih kategori" }),
   price:        z.coerce.number().min(10000, "Harga minimal Rp 10.000"),
   demoUrl:      z.string().url("URL demo tidak valid"),
   thumbnailUrl: z.string().url("URL thumbnail tidak valid").optional().or(z.literal("")),

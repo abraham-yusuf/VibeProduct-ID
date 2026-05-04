@@ -6,7 +6,7 @@ export const platforms = [
 
 export const categorySchema = z.object({
   name:      z.string().min(2, "Nama minimal 2 karakter"),
-  platform:  z.enum(platforms, { errorMap: () => ({ message: "Pilih platform" }) }),
+  platform:  z.enum(platforms, { message: "Pilih platform" }),
   icon:      z.string().optional(),
   sortOrder: z.coerce.number().default(0),
   isActive:  z.boolean().default(true),
@@ -36,3 +36,4 @@ export const orderSchema = z.object({
 export type CategoryInput = z.infer<typeof categorySchema>
 export type PackageInput  = z.infer<typeof packageSchema>
 export type OrderInput    = z.infer<typeof orderSchema>
+export type OrderFormInput = z.input<typeof orderSchema>

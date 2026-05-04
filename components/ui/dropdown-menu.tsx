@@ -17,7 +17,7 @@ function DropdownMenuPortal({ ...props }: MenuPrimitive.Portal.Props) {
 
 function DropdownMenuTrigger({ asChild, ...props }: MenuPrimitive.Trigger.Props & { asChild?: boolean }) {
   const Component = asChild ? Slot : MenuPrimitive.Trigger
-  return <Component data-slot="dropdown-menu-trigger" {...props} />
+  return <Component data-slot="dropdown-menu-trigger" {...(props as Record<string, unknown>)} />
 }
 
 function DropdownMenuContent({
@@ -70,7 +70,7 @@ function DropdownMenuLabel({
         "px-1.5 py-1 text-xs font-medium text-muted-foreground data-inset:pl-7",
         className
       )}
-      {...props}
+      {...(props as Record<string, unknown>)}
     />
   )
 }
