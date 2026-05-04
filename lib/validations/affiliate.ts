@@ -4,7 +4,7 @@ export const affiliatePlatforms = ["shopee", "tokopedia", "tiktok_shop"] as cons
 
 export const affiliateLinkSchema = z.object({
   title:        z.string().min(2, "Judul minimal 2 karakter"),
-  platform:     z.enum(affiliatePlatforms, { errorMap: () => ({ message: "Pilih platform" }) }),
+  platform:     z.enum(affiliatePlatforms, { message: "Pilih platform" }),
   url:          z.string().url("URL tidak valid"),
   thumbnailUrl: z.string().url("URL thumbnail tidak valid").or(z.literal("")).default(""),
   description:  z.string().default(""),
