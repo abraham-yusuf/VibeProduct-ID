@@ -1,21 +1,20 @@
-// ─── app/dashboard/docs/[id]/edit/page.tsx ───────────────────────────────────
-// NOTE:
-// - Ini halaman untuk edit Docs Page.
-// - Mirip halaman create, tapi mengambil `initialData` dari database.
+// ─── app/dashboard/docs/[id]/edit/page.tsx ─────────────────────────────────
 
 import { notFound } from "next/navigation"
+import { eq } from "drizzle-orm"
+
 import { db } from "@/lib/db"
 import { docsPages } from "@/lib/db/schema/docs"
-import { eq } from "drizzle-orm"
 import { DocsEditor } from "@/components/dashboard/docs/docs-editor"
 
 interface Props {
-  params: Promise<{ id: string }>
+  params: { id: string }
 }
 
 export default async function EditDocsPage({ params }: Props) {
-  const { id } = await params
+  const { id } = params
 
+  // Load categories + target page.
   const [categories, page] = await Promise.all([
     db.query.docsCategories.findMany({
       orderBy: (c, { asc }) => [asc(c.sortOrder)],

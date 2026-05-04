@@ -1,22 +1,24 @@
-// ─── app/dashboard/ideathon/[id]/edit/page.tsx ───────────────────────────────
-// NOTE:
-// - Ini halaman untuk edit Ideathon Post.
-// - Mirip `app/dashboard/ideathon/new/page.tsx`, tapi mengambil `initialData`.
+// ─── app/dashboard/ideathon/[id]/edit/page.tsx ─────────────────────────────
 
 import { notFound } from "next/navigation"
+import { eq } from "drizzle-orm"
+
 import { db } from "@/lib/db"
 import { ideathonPosts, ideathonCategories } from "@/lib/db/schema/ideathon"
 import { affiliateLinks } from "@/lib/db/schema/affiliate"
-import { and, eq } from "drizzle-orm"
 import { IdeathonEditor } from "@/components/dashboard/ideathon/ideathon-editor"
 
 interface Props {
-  params: Promise<{ id: string }>
+  params: { id: string }
 }
 
 export default async function EditIdeathonPage({ params }: Props) {
-  const { id } = await params
+  const { id } = params
 
+  // Load semua data yang dibutuhkan editor:
+  // - categories: untuk dropdown kategori
+  // - affiliates: untuk picker affiliate (insert ke konten)
+  // - post: data post yang mau diedit
   const [categories, affiliates, post] = await Promise.all([
     db.select().from(ideathonCategories),
     db.select().from(affiliateLinks).where(eq(affiliateLinks.isActive, true)),
