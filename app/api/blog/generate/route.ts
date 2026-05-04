@@ -21,7 +21,7 @@ export async function POST(req: NextRequest) {
   const body   = await req.json()
   const input  = aiGenerateSchema.safeParse(body)
   if (!input.success) {
-    return new Response(input.error.errors[0].message, { status: 400 })
+    return new Response(input.error.issues[0]?.message ?? "Invalid input", { status: 400 })
   }
 
   // Ambil konfigurasi AI aktif
@@ -53,7 +53,7 @@ ${keywords ? `- Sertakan kata kunci: ${keywords}` : ""}
 Tulis artikel sekarang:`
 
   const model  = buildProvider(config)
-  const result = streamText({ model, prompt, maxTokens: 3000 })
+  const result = streamText({ model, prompt, maxOutputTokens: 3000 })
 
-  return result.toDataStreamResponse()
+  return result.toTextStreamResponse()
 }

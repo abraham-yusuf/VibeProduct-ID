@@ -4,7 +4,7 @@ import { useState } from "react"
 import { useForm } from "react-hook-form"
 import { zodResolver } from "@hookform/resolvers/zod"
 import { aiGenerateSchema, type AiGenerateInput } from "@/lib/validations/blog"
-import { useCompletion } from "ai/react"
+// NOTE: Use plain fetch to keep client integration simple.
 import { Dialog, DialogContent, DialogHeader, DialogTitle } from "@/components/ui/dialog"
 import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
@@ -21,22 +21,40 @@ interface Props {
 
 export function AIGenerateModal({ open, onClose, onGenerated }: Props) {
   const [done, setDone] = useState(false)
+  const [completion, setCompletion] = useState("")
+  const [isLoading, setIsLoading] = useState(false)
 
   const { register, handleSubmit, setValue, formState: { errors } } =
-    useForm<AiGenerateInput>({
+    useForm({
       resolver: zodResolver(aiGenerateSchema),
       defaultValues: { length: "medium", tone: "informative", language: "id" },
     })
 
-  const { complete, completion, isLoading } = useCompletion({
-    api: "/api/blog/generate",
-    onFinish: () => setDone(true),
-    onError: (e) => toast.error(e.message ?? "Gagal generate konten"),
-  })
-
   async function onSubmit(data: AiGenerateInput) {
     setDone(false)
-    await complete("", { body: data })
+    setIsLoading(true)
+    setCompletion("")
+
+    try {
+      const res = await fetch("/api/blog/generate", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(data),
+      })
+
+      if (!res.ok) {
+        const msg = await res.text()
+        throw new Error(msg || "Gagal generate konten")
+      }
+
+      const text = await res.text()
+      setCompletion(text)
+      setDone(true)
+      setIsLoading(false)
+    } catch (error) {
+      setIsLoading(false)
+      toast.error(error instanceof Error ? error.message : "Gagal generate konten")
+    }
   }
 
   function handleUse() {

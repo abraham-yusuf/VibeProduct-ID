@@ -43,7 +43,7 @@ export function BlogEditor({ categories, initialData }: Props) {
   const [aiOpen, setAiOpen]    = useState(false)
 
   const { register, handleSubmit, setValue, watch, formState: { errors } } =
-    useForm<BlogPostInput>({
+    useForm({
       resolver: zodResolver(blogPostSchema),
       defaultValues: {
         title:          initialData?.title ?? "",
@@ -184,7 +184,7 @@ export function BlogEditor({ categories, initialData }: Props) {
                   <Label>Kategori</Label>
                   <Select
                     defaultValue={initialData?.categoryId ?? ""}
-                    onValueChange={(v) => setValue("categoryId", v)}
+                    onValueChange={(v) => setValue("categoryId", v || "")}
                   >
                     <SelectTrigger>
                       <SelectValue placeholder="Pilih kategori" />

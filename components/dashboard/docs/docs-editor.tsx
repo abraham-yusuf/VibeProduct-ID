@@ -50,7 +50,7 @@ export function DocsEditor({ categories, initialCategoryId, initialData }: Props
     setValue,
     watch,
     formState: { errors },
-  } = useForm<DocsPageInput>({
+  } = useForm({
     resolver: zodResolver(docsPageSchema),
     defaultValues: {
       categoryId: initialData?.categoryId ?? initialCategoryId ?? categories[0]?.id ?? "",
@@ -127,8 +127,8 @@ export function DocsEditor({ categories, initialCategoryId, initialData }: Props
               <div className="space-y-1.5">
                 <Label>Kategori *</Label>
                 <Select
-                  value={categoryIdValue}
-                  onValueChange={(v) => setValue("categoryId", v)}
+                  value={categoryIdValue ?? ""}
+                  onValueChange={(v) => setValue("categoryId", v ?? "")}
                 >
                   <SelectTrigger>
                     <SelectValue placeholder="Pilih kategori" />
@@ -195,4 +195,3 @@ export function DocsEditor({ categories, initialCategoryId, initialData }: Props
     </form>
   )
 }
-
