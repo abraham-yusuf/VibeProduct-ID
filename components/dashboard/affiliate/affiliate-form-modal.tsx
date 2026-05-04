@@ -35,9 +35,9 @@ export function AffiliateLinkFormModal({ open, onClose, editData }: Props) {
   const [newTag, setNewTag] = useState("")
 
   const { register, handleSubmit, setValue, watch, reset, formState: { errors } } =
-    useForm<AffiliateLinkInput>({
+    useForm({
       resolver: zodResolver(affiliateLinkSchema),
-      defaultValues: { isActive: true, tags: [] },
+      defaultValues: { isActive: true, tags: [], thumbnailUrl: "", description: "" },
     })
 
   const isActive = watch("isActive")

@@ -1,6 +1,6 @@
 import { db } from "@/lib/db"
 import { aiSettings } from "@/lib/db/schema/blog"
-import { AISettingsForm } from "@/components/dashboard/settings/ai-settings-form"
+import { AISettingsForm } from "@/components/dashboard/settings/ai/ai-settings-form"
 
 export default async function AISettingsPage() {
   const settings = await db.select().from(aiSettings)

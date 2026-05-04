@@ -51,36 +51,54 @@
 }
 
 @layer base {
-  * { @apply border-border; }
+  /* Tailwind v4 doesn't ship a `border-border` utility by default.
+     Use the `border` color token directly instead. */
+  * { @apply border-[hsl(var(--border))]; }
   body {
-    @apply bg-background text-foreground antialiased;
+    /* Avoid `bg-background` + `text-foreground` utilities (Tailwind v4 tokens differ).
+       Use CSS variables directly for predictable builds. */
+    background-color: hsl(var(--background));
+    color: hsl(var(--foreground));
+    @apply antialiased;
     font-feature-settings: "rlig" 1, "calt" 1;
   }
-  h1, h2, h3, h4, h5, h6 { @apply font-semibold tracking-tight; }
+  /* Avoid `@apply` for typography utilities to keep Tailwind v4 compatible. */
+  h1, h2, h3, h4, h5, h6 {
+    font-weight: 600;
+    letter-spacing: -0.025em;
+  }
 }
 
 @layer utilities {
   .gradient-brand {
-    @apply bg-gradient-to-r from-violet-600 to-purple-600;
+    background: linear-gradient(90deg, #7c3aed 0%, #9333ea 100%);
   }
   .gradient-brand-text {
-    @apply bg-gradient-to-r from-violet-600 to-purple-500 bg-clip-text text-transparent;
+    background: linear-gradient(90deg, #7c3aed 0%, #a855f7 100%);
+    -webkit-background-clip: text;
+    background-clip: text;
+    color: transparent;
   }
   .gradient-hero {
     background: radial-gradient(ellipse 80% 50% at 50% -20%, rgba(124,58,237,0.3) 0%, transparent 70%);
   }
   .glass {
-    @apply bg-white/10 backdrop-blur-md border border-white/20;
+    background-color: rgb(255 255 255 / 0.1);
+    backdrop-filter: blur(12px);
+    border: 1px solid rgb(255 255 255 / 0.2);
   }
   .shimmer {
     background: linear-gradient(90deg, transparent 25%, rgba(255,255,255,0.08) 50%, transparent 75%);
     background-size: 200% 100%;
-    @apply animate-shimmer;
+    animation: shimmer 2s linear infinite;
   }
 }
 
 /* Scrollbar */
 ::-webkit-scrollbar { width: 6px; }
-::-webkit-scrollbar-track { @apply bg-transparent; }
-::-webkit-scrollbar-thumb { @apply bg-border rounded-full; }
-::-webkit-scrollbar-thumb:hover { @apply bg-muted-foreground/50; }
+::-webkit-scrollbar-track { background: transparent; }
+::-webkit-scrollbar-thumb {
+  background: hsl(var(--border));
+  border-radius: 9999px;
+}
+::-webkit-scrollbar-thumb:hover { background: rgb(148 163 184 / 0.5); }

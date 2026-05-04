@@ -41,7 +41,7 @@ export function WeddingThemeFormModal({ open, onClose, editData }: Props) {
   const [newFeature, setNewFeature] = useState("")
 
   const { register, handleSubmit, setValue, watch, reset, formState: { errors } } =
-    useForm<WeddingThemeInput>({
+    useForm({
       resolver: zodResolver(weddingThemeSchema),
       defaultValues: { isActive: true, sortOrder: 0, features: [] },
     })

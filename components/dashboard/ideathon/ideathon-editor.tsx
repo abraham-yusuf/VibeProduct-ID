@@ -52,7 +52,7 @@ export function IdeathonEditor({ categories, affiliates, initialData }: Props) {
   const [affiliateOpen, setAffiliateOpen] = useState(false)
 
   const { register, handleSubmit, setValue, watch, formState: { errors } } =
-    useForm<IdeathonPostInput>({
+    useForm({
       resolver: zodResolver(ideathonPostSchema),
       defaultValues: {
         title:          initialData?.title ?? "",
@@ -60,7 +60,7 @@ export function IdeathonEditor({ categories, affiliates, initialData }: Props) {
         thumbnailUrl:   initialData?.thumbnailUrl ?? "",
         categoryId:     initialData?.categoryId   ?? "",
         embedUrl:       initialData?.embedUrl      ?? "",
-        embedType:      (initialData?.embedType as any) ?? "none",
+        embedType:      (initialData?.embedType as (typeof embedTypes)[number] | undefined) ?? "none",
         adsenseEnabled: initialData?.adsenseEnabled ?? false,
         isPublished:    initialData?.isPublished    ?? false,
         tags:           initialData?.tags ?? [],
@@ -213,7 +213,7 @@ export function IdeathonEditor({ categories, affiliates, initialData }: Props) {
                   <Label>Kategori</Label>
                   <Select
                     defaultValue={initialData?.categoryId ?? ""}
-                    onValueChange={(v) => setValue("categoryId", v)}
+                    onValueChange={(v) => setValue("categoryId", v || "")}
                   >
                     <SelectTrigger>
                       <SelectValue placeholder="Pilih kategori" />
