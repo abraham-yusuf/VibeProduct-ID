@@ -34,7 +34,6 @@ export async function proxy(req: NextRequest) {
   return NextResponse.next()
 }
 
-export const middleware = proxy
 
 export const config = {
   matcher: [
