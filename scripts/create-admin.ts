@@ -6,10 +6,8 @@ import { createId } from "@paralleldrive/cuid2"
 import * as bcrypt from "bcryptjs"
 import { config as loadEnv } from "dotenv"
 
-loadEnv({ path: ".env.local" })
-if (!process.env.DATABASE_URL) {
-  loadEnv({ path: ".env" })
-}
+loadEnv({ path: ".env" })
+loadEnv({ path: ".env.local", override: true })
 
 if (!process.env.DATABASE_URL) {
   console.error("DATABASE_URL belum diset. Silakan tambahkan ke .env.local atau .env terlebih dahulu.")
