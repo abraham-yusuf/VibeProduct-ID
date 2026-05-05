@@ -2,16 +2,30 @@
  * Script untuk membuat akun admin pertama
  * Jalankan: pnpm auth:create-admin
  */
-import { db } from "../lib/db"
-import { users, accounts } from "../lib/db/schema/auth"
 import { createId } from "@paralleldrive/cuid2"
 import * as bcrypt from "bcryptjs"
+import { config as loadEnv } from "dotenv"
+
+loadEnv({ path: ".env.local" })
+if (!process.env.DATABASE_URL) {
+  loadEnv({ path: ".env" })
+}
+
+if (!process.env.DATABASE_URL) {
+  console.error("DATABASE_URL belum diset. Tambahkan ke .env.local atau .env terlebih dahulu.")
+  process.exit(1)
+}
 
 const ADMIN_EMAIL    = process.env.ADMIN_EMAIL    ?? "admin@vibeproduct.biz.id"
 const ADMIN_PASSWORD = process.env.ADMIN_PASSWORD ?? "VibeAdmin2025!"
 const ADMIN_NAME     = "Admin Vibe Product ID"
 
 async function main() {
+  const [{ db }, { users, accounts }] = await Promise.all([
+    import("../lib/db"),
+    import("../lib/db/schema/auth"),
+  ])
+
   console.log("🔧 Membuat akun admin...")
 
   const existing = await db.query.users.findFirst({
