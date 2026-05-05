@@ -1,11 +1,11 @@
 import Link from "next/link"
 import Image from "next/image"
 import { db } from "@/lib/db"
-import { blogPosts, blogCategories } from "@/lib/db/schema/blog"
+import { blogPosts } from "@/lib/db/schema/blog"
 import { eq, desc } from "drizzle-orm"
 import { Badge } from "@/components/ui/badge"
 import { AdSlot } from "@/components/shared/ad-slot"
-import { formatDate, truncate } from "@/lib/utils"
+import { formatDate } from "@/lib/utils"
 import type { Metadata } from "next"
 
 export const metadata: Metadata = {

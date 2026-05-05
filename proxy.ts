@@ -5,7 +5,7 @@ const PROTECTED_ROUTES = ["/dashboard"]
 // Routes yang hanya untuk guest (belum login)
 const AUTH_ROUTES = ["/auth/login"]
 
-export async function middleware(req: NextRequest) {
+export async function proxy(req: NextRequest) {
   const { pathname } = req.nextUrl
 
   // Cek apakah route ini diproteksi

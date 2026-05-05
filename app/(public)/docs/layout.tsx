@@ -1,6 +1,6 @@
 // ─── app/(public)/docs/layout.tsx ────────────────────────────────────────────
 import { db } from "@/lib/db"
-import { docsCategories, docsPages } from "@/lib/db/schema/docs"
+import { docsPages } from "@/lib/db/schema/docs"
 import { eq } from "drizzle-orm"
 import { DocsSidebar } from "@/components/public/docs/docs-sidebar"
 
