@@ -12,7 +12,7 @@ if (!process.env.DATABASE_URL) {
 }
 
 if (!process.env.DATABASE_URL) {
-  console.error("DATABASE_URL belum diset. Tambahkan ke .env.local atau .env terlebih dahulu.")
+  console.error("DATABASE_URL belum diset. Silakan tambahkan ke .env.local atau .env terlebih dahulu.")
   process.exit(1)
 }
 
@@ -21,10 +21,8 @@ const ADMIN_PASSWORD = process.env.ADMIN_PASSWORD ?? "VibeAdmin2025!"
 const ADMIN_NAME     = "Admin Vibe Product ID"
 
 async function main() {
-  const [{ db }, { users, accounts }] = await Promise.all([
-    import("../lib/db"),
-    import("../lib/db/schema/auth"),
-  ])
+  const { db } = await import("../lib/db")
+  const { users, accounts } = await import("../lib/db/schema/auth")
 
   console.log("🔧 Membuat akun admin...")
 
